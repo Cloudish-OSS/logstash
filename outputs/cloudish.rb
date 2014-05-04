@@ -31,7 +31,7 @@ class LogStash::Outputs::Cloudish < LogStash::Outputs::Base
     end
 	
 	uri = @host + @key
-    res = RestClient.post uri, :param1 => event["message"]
+    res = RestClient.post uri, event["message"]
     
     if res.code==200
       @logger.info("Event send to Cloudish OK!")
