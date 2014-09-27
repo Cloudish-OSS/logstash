@@ -1,0 +1,8 @@
+output {
+
+Cloudish {
+    host => "https://api.cloudish.net/signal/logs/"
+    key => "[enter your API Key here]"
+  }
+
+}
