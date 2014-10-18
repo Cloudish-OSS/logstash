@@ -9,14 +9,13 @@ class LogStash::Outputs::Cloudish < LogStash::Outputs::Base
   config_name "Cloudish"
   milestone 2
 
-    config :host, :validate => :string, :default => "https://api.cloudish.net/signal/logs/"
+    config :host, :validate => :string, :default => "https://api.cloudish.net/signal"
     config :key, :validate => :string, :required => true
-
-
-
- 
+    config :signalType, :validate => :string, :required => true
+    config :tags, :validate => :string, :required => false
 
   public
+  
   def register
 	#do Nothing
   end
@@ -30,8 +29,8 @@ class LogStash::Outputs::Cloudish < LogStash::Outputs::Base
       return
     end
 	
-	uri = @host + @key
-    res = RestClient.post uri, event["message"]
+    uri = @host + "/" + @key + "/" + @signalType + "/" + @tags
+    res = RestClient.post uri, event["message"], :content_type => 'application/x-www-form-urlencoded'
     
     if res.code==200
       @logger.info("Event send to Cloudish OK!")
